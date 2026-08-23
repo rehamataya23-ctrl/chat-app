@@ -3,104 +3,524 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat App</title>
+
+  <title>محادثة</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
     body {
       margin: 0;
+      width: 100%;
+      height: 100%;
       font-family: Arial, sans-serif;
-      background-color: #efeae2;
-background-image:
-  radial-gradient(circle at 20% 20%, rgba(0,0,0,.035) 0 2px, transparent 3px),
-  radial-gradient(circle at 80% 70%, rgba(0,0,0,.03) 0 2px, transparent 3px),
-  radial-gradient(circle at 40% 85%, rgba(0,0,0,.025) 0 1.5px, transparent 2.5px);
-background-size: 80px 80px, 100px 100px, 60px 60px;
     }
+
+    body {
+      background-color: #efeae2;
+
+      /* خلفية قريبة من واتساب */
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(0,0,0,.035) 0 3px, transparent 4px),
+        radial-gradient(circle at 80% 70%, rgba(0,0,0,.03) 0 3px, transparent 4px),
+        radial-gradient(circle at 40% 85%, rgba(0,0,0,.025) 0 3px, transparent 4px);
+
+      background-size:
+        80px 80px,
+        100px 100px,
+        60px 60px;
+    }
+
     .app {
+      width: 100%;
       max-width: 500px;
-      margin: auto;
       height: 100vh;
-      background ;transparent
+      margin: auto;
+      background: transparent;
       display: flex;
       flex-direction: column;
     }
+
+    /* الشريط العلوي */
     .header {
-      padding: 18px;
-      background: #222;
+      height: 72px;
+      padding: 0 18px;
+      background: #202020;
       color: white;
-      font-size: 20px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      font-size: 21px;
       font-weight: bold;
     }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #555;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 22px;
+    }
+
+    .header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .header-name {
+      font-size: 18px;
+    }
+
+    .header-status {
+      font-size: 12px;
+      color: #bdbdbd;
+      font-weight: normal;
+    }
+
+    /* منطقة الرسائل */
     .messages {
       flex: 1;
-      padding: 20px;
+      padding: 18px 14px;
       overflow-y: auto;
-    }
-    .message {
-      width: fit-content;
-      max-width: 80%;
-      padding: 12px 16px;
-      margin: 10px 0;
-      border-radius: 18px;
-      background: #e9e9e9;
-    }
-    .mine {
-      margin-right: auto;
-      background: #222;
-      color: white;
-    }
-    .input {
+
       display: flex;
-      padding: 12px;
-      border-top: 1px solid #ddd;
-      gap: 8px;
+      flex-direction: column;
     }
-    input {
-      flex: 1;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
+
+    /* فاصل اليوم */
+    .date-separator {
+      align-self: center;
+
+      margin: 12px 0 18px;
+
+      padding: 6px 13px;
+
+      background: #e1f3e8;
+      color: #667781;
+
+      border-radius: 8px;
+
+      font-size: 12px;
+
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+
+    /* الرسائل */
+    .message {
+      max-width: 78%;
+
+      padding: 9px 11px;
+
+      margin-bottom: 8px;
+
+      border-radius: 10px;
+
       font-size: 16px;
+      line-height: 1.5;
+
+      box-shadow: 0 1px 1px rgba(0,0,0,.12);
+
+      word-wrap: break-word;
     }
-    button {
-      border: 0;
-      border-radius: 20px;
-      padding: 0 18px;
-      background: #222;
+
+    /* رسالة الطرف الآخر */
+    .message.other {
+      align-self: flex-start;
+
+      background: #202020;
       color: white;
+
+      border-top-left-radius: 3px;
+    }
+
+    /* رسالتي */
+    .message.mine {
+      align-self: flex-end;
+
+      background: #d9fdd3;
+      color: #111;
+
+      border-top-right-radius: 3px;
+    }
+
+    .message-content {
+      display: inline;
+    }
+
+    .message-info {
+      display: inline-flex;
+      align-items: center;
+
+      margin-right: 8px;
+
+      vertical-align: bottom;
+
+      white-space: nowrap;
+    }
+
+    .message-time {
+      font-size: 10px;
+      color: #667781;
+    }
+
+    .check {
+      margin-right: 3px;
+
+      font-size: 13px;
+      color: #53a8d8;
+      font-weight: bold;
+    }
+
+    /* منطقة الكتابة */
+    .input-area {
+      padding: 10px;
+
+      background: rgba(239,234,226,.96);
+
+      border-top: 1px solid rgba(0,0,0,.08);
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input {
+      flex: 1;
+
+      height: 58px;
+
+      border: 1px solid #ccc;
+      border-radius: 30px;
+
+      background: white;
+
+      padding: 0 20px;
+
+      font-size: 16px;
+
+      outline: none;
+      direction: rtl;
+    }
+
+    .input:focus {
+      border-color: #999;
+    }
+
+    .send {
+      width: 105px;
+      height: 58px;
+
+      border: none;
+      border-radius: 30px;
+
+      background: #202020;
+      color: white;
+
+      font-size: 16px;
+
+      cursor: pointer;
+    }
+
+    .send:active {
+      transform: scale(.97);
+    }
+
+    /* على الشاشات الصغيرة */
+    @media (max-width: 500px) {
+      .app {
+        max-width: none;
+      }
+
+      .message {
+        max-width: 82%;
+      }
+
+      .send {
+        width: 100px;
+      }
     }
   </style>
 </head>
 
 <body>
+
   <div class="app">
-    <div class="header">محادثة</div>
 
+    <!-- الهيدر -->
+    <div class="header">
+
+      <div class="avatar">
+        👤
+      </div>
+
+      <div class="header-info">
+        <div class="header-name">
+          محادثة
+        </div>
+
+        <div class="header-status">
+          متصل الآن
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- الرسائل -->
     <div class="messages" id="messages">
-      <div class="message">مرحبا 👋</div>
-      <div class="message mine">أهلا!</div>
+
+      <div class="date-separator">
+        اليوم
+      </div>
+
+      <div class="message other">
+        <span class="message-content">أهلا!</span>
+
+        <span class="message-info">
+          <span class="message-time">04:07</span>
+        </span>
+      </div>
+
+      <div class="message mine">
+        <span class="message-content">مرحبا 👋</span>
+
+        <span class="message-info">
+          <span class="message-time">04:07</span>
+          <span class="check">✓✓</span>
+        </span>
+      </div>
+
     </div>
 
-    <div class="input">
-      <input id="text" placeholder="اكتب رسالة...">
-      <button onclick="sendMessage()">إرسال</button>
+
+    <!-- الكتابة -->
+    <div class="input-area">
+
+      <input
+        id="text"
+        class="input"
+        type="text"
+        placeholder="اكتب رسالة..."
+        autocomplete="off"
+      >
+
+      <button
+        class="send"
+        onclick="sendMessage()"
+      >
+        إرسال
+      </button>
+
     </div>
+
   </div>
 
+
   <script>
-    function sendMessage() {
-      const input = document.getElementById("text");
-      const text = input.value.trim();
 
-      if (!text) return;
+    let lastDate = new Date().toDateString();
 
-      const msg = document.createElement("div");
-      msg.className = "message mine";
-      msg.textContent = text;
 
-      document.getElementById("messages").appendChild(msg);
-      input.value = "";
+    function getDateLabel(date) {
+
+      const today = new Date();
+
+      const yesterday = new Date();
+
+      yesterday.setDate(
+        yesterday.getDate() - 1
+      );
+
+
+      if (
+        date.toDateString() ===
+        today.toDateString()
+      ) {
+        return "اليوم";
+      }
+
+
+      if (
+        date.toDateString() ===
+        yesterday.toDateString()
+      ) {
+        return "أمس";
+      }
+
+
+      return date.toLocaleDateString(
+        "ar",
+        {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      );
     }
+
+
+    function addDateSeparator(date) {
+
+      const currentDate =
+        date.toDateString();
+
+
+      if (currentDate === lastDate) {
+        return;
+      }
+
+
+      const separator =
+        document.createElement("div");
+
+
+      separator.className =
+        "date-separator";
+
+
+      separator.textContent =
+        getDateLabel(date);
+
+
+      document
+        .getElementById("messages")
+        .appendChild(separator);
+
+
+      lastDate = currentDate;
+    }
+
+
+    function sendMessage() {
+
+      const input =
+        document.getElementById("text");
+
+
+      const text =
+        input.value.trim();
+
+
+      if (!text) {
+        return;
+      }
+
+
+      const now =
+        new Date();
+
+
+      addDateSeparator(now);
+
+
+      const msg =
+        document.createElement("div");
+
+
+      msg.className =
+        "message mine";
+
+
+      const content =
+        document.createElement("span");
+
+
+      content.className =
+        "message-content";
+
+
+      content.textContent =
+        text;
+
+
+      const info =
+        document.createElement("span");
+
+
+      info.className =
+        "message-info";
+
+
+      const time =
+        document.createElement("span");
+
+
+      time.className =
+        "message-time";
+
+
+      time.textContent =
+        now.toLocaleTimeString(
+          "ar",
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+
+      const check =
+        document.createElement("span");
+
+
+      check.className =
+        "check";
+
+
+      check.textContent =
+        "✓✓";
+
+
+      info.appendChild(time);
+      info.appendChild(check);
+
+      msg.appendChild(content);
+      msg.appendChild(info);
+
+
+      document
+        .getElementById("messages")
+        .appendChild(msg);
+
+
+      input.value = "";
+
+
+      const messages =
+        document.getElementById("messages");
+
+
+      messages.scrollTop =
+        messages.scrollHeight;
+    }
+
+
+    /* إرسال بالضغط على Enter */
+    document
+      .getElementById("text")
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (event.key === "Enter") {
+            sendMessage();
+          }
+
+        }
+      );
+
   </script>
+
 </body>
 </html>
